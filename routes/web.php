@@ -31,3 +31,7 @@ Route::get('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsControl
 
 
 Route::get('/master-items/update-random-data', [App\Http\Controllers\MasterItemsController::class, 'updateRandomData']);
+
+Route::resource('kategori', App\Http\Controllers\KategoriController::class);
+Route::get('kategori/{kategori}/pdf', [App\Http\Controllers\KategoriController::class, 'pdf'])->name('kategori.pdf');
+Route::get('/master-items/export', [App\Http\Controllers\MasterItemsController::class, 'export']);

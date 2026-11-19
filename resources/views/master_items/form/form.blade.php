@@ -1,5 +1,8 @@
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     @csrf
+    @if ($errors->any())
+        <div class="alert alert-danger">{{ $errors->first() }}</div>
+    @endif
     @if($method == 'edit')
     <div class="form-group">
         <label>Kode Barang</label>
@@ -46,6 +49,27 @@
             <optio @if($selected == 'Umum') selected @endif>Umum</option>
             <optio @if($selected == 'ATK') selected @endif>ATK</option>
         </select>
+    </div>
+
+    @php $selectedKategori = old('kategori_ids', $item->exists ? $item->kategoris->pluck('id')->all() : []); @endphp
+<div class="form-group">
+    <label>Kategori</label>
+    @forelse($kategoris as $k)
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="kategori_ids[]" value="{{ $k->id }}" id="kat-{{ $k->id }}" @checked(in_array($k->id, $selectedKategori))>
+            <label class="form-check-label" for="kat-{{ $k->id }}">{{ $k->nama }} ({{ $k->kode }})</label>
+        </div>
+    @empty
+        <div class="text-muted">Belum ada kategori. <a href="{{ route('kategori.create') }}">Buat kategori</a></div>
+    @endforelse
+</div>
+
+    <div class="form-group">
+        <label>Foto</label>
+        <input type="file" class="form-control" name="foto" accept="image/*">
+        @if (!empty($item->foto))
+            <img src="{{ asset('storage/' . $item->foto) }}" alt="Foto" class="img-thumbnail mt-2" style="max-height: 120px;">
+        @endif
     </div>
 
     <button class="btn btn-primary mt-3">Submit</button>
