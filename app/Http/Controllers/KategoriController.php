@@ -66,7 +66,7 @@ class KategoriController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Kategori $kategori)
     {
         return view('kategori.form', compact('kategori'));
     }
@@ -98,9 +98,10 @@ class KategoriController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Kategori $kategori)
     {
-        //
+        $kategori->delete();
+        return redirect('kategori')->with('status', 'Kategori berhasil dihapus');
     }
 
     public function pdf(Kategori $kategori)
